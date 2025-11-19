@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+      }
+      .menu {
+        margin: 50px auto;
+        text-align: center;
+      }
+      #movieBoard {
+        width: 90%;
+        margin: 50px auto;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        /* align-items: center; */
+        text-align: center;
+        border: 1px solid blue;
+        box-sizing: border-box;
+      }
+      #movieBoard .card {
+        margin: 50px 0px;
+        width: calc(100% / 4 - 15px);
+        border: 1px solid red;
+        box-sizing: border-box;
+      }
+      img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.7);
+      }
+      h3 {
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+      .search {
+        text-align: center;
+      }
+      .card {
+        position: relative;
+      }
+      .card.on {
+        display: block;
+      }
+      .movieDetail {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        padding: 0px 16px;
+        box-sizing: border-box;
+        color: #fff;
+        display: none;
+      }
+      .card.on::before {
+        background-color: rgba(0, 0, 0, 0.7);
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        pointer-events: none;
+      }
+      .card.on .movieDetail {
+        display: block;
+      }
+      .movieDetail .overview {
+        font-weight: normal;
+        height: calc(400px - 30px);
+        overflow-y: scroll;
+        display: flex;
+        align-items: center;
+        z-index: 1;
+        font-size: 0.9rem;
+        box-sizing: border-box;
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .movieDetail .vote {
+        height: 30px;
+      }
+      #more {
+        margin: 50px auto;
+        text-align: center;
+        display: block;
+        width: 100px;
+        cursor: pointer;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="menu">
+      <button
+        data-title="현재상영작"
+        onclick="movie('now_playing')"
+        type="button"
+      >
+        현재상영작
+      </button>
+      <button onclick="movie('popular')" type="button">무비차트</button>
+      <button onclick="movie('top_rated')" type="button">추천영화</button>
+      <button onclick="movie('upcoming')" type="button">상영예정</button>
+    </div>
+    <div class="search">
+      <input type="text" id="searchInput" placeholder="영화제목을 입력하세요" />
+      <button id="searchBtn">검색</button>
+    </div>
+    <h2></h2>
+    <section id="movieBoard"></section>
+    <button id="more">더보기</button>
+    <script src="custom3.js"></script>
+  </body>
+</html>
+<!--
+url기본주소 
+기본주소에 추가를 하는 것을 파라미터라고 함
+(파리미터=값), 처음에 파라미터를 추가할 때는 앞에 ?를 입력함, 그 뒤 부터는 &로 연결
+
+기본주소?파라미터=값&파라미터=값&파라미터=값
+
+-->
