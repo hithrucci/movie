@@ -4,24 +4,33 @@ let apikey = "56e4c11af3a58be9818d461a54ab6e64";
 //---------------------------------------------
 // movie 함수(api연결,데이터 선택,render호출)
 //---------------------------------------------
-
-let movie = async (lists) => {
+let page = 1;
+let currentPage = "now_palying";
+let movie = async (lists, page = 1) => {
   //   console.log(lists);
   let url = `
-https://api.themoviedb.org/3/movie/${lists}?api_key=${apikey}&language=ko-KR`;
+https://api.themoviedb.org/3/movie/${lists}?api_key=${apikey}&language=ko-KR&page=${page}`;
+
+  let morePage = document.querySelector("#more");
+  morePage.addEventListener("click", async () => {
+    page++;
+    let url = `
+https://api.themoviedb.org/3/movie/${lists}?api_key=${apikey}&language=ko-KR&page=${page}`;
+    console.log(page);
+    let response = await fetch(url);
+    //json형태는 객체
+    let data = await response.json();
+    console.log(data);
+    let movieList = data.results;
+    render(movieList);
+  });
 
   let response = await fetch(url);
   //json형태는 객체
   let data = await response.json();
-  //   console.log(data);
-  let movieList = data.results;
+  console.log(data);
 
-  let page = data.page;
-  let more = document.querySelector("#more");
-  more.addEventListener("click", () => {
-    page++;
-    console.log(page);
-  });
+  let movieList = data.results;
   render(movieList);
 };
 
@@ -39,11 +48,13 @@ let render = (movieList) => {
     }"</img>
     <h3>${movie.title}</h3>
     <div class="movieDetail">
-    <h4 class="overview">${movie.overview}</h4>
+    <h4 class="overview">${over(movie.overview, 100)}</h4>
     <h4 class="vote">평점:${movie.vote_average.toFixed(1)}</h4>
     </div>
     </div>`;
+
     movieBoard.innerHTML += card;
+
     let cards = document.querySelectorAll(".card");
     cards.forEach((card) => {
       card.addEventListener("mouseenter", () => {
@@ -55,6 +66,9 @@ let render = (movieList) => {
     });
   });
 };
+function over(text, limit) {
+  return text.length > limit ? text.slice(0, limit) + "..." : text;
+}
 movie("now_playing");
 //---------------------------------------------
 // 검색
@@ -91,5 +105,3 @@ https://api.themoviedb.org/3/search/movie?query=${keyword}&api_key=${apikey}&lan
 //---------------------------------------------
 // 더보기
 //---------------------------------------------
-let more = document.querySelector("#more");
-more.addEventListener("click", () => {});
